@@ -6,7 +6,7 @@ import BancoEmMemoria from '../infra/banco/banco-em-memoria'
 
 
 describe("Testando salva filme use case",()=>{
-    test("Deve salvar um filme",()=>{
+    test("Deve salvar um filme", async ()=>{
         const bancoEmMemoria = new BancoEmMemoria()
         const salvaFilme = new SalvaFilme(bancoEmMemoria)
         const input = {
@@ -15,7 +15,7 @@ describe("Testando salva filme use case",()=>{
             descricao:"test",
             imagem:"test"
         }
-        const resultado = salvaFilme.execute(input)
+        const resultado = await salvaFilme.execute(input)
         expect(resultado).toEqual(input)
     })
 })
