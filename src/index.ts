@@ -1,6 +1,8 @@
 import express from 'express'
 const app = express()
 app.use(express.json())
+import ListaFilme from './aplicacao/lista-filme.use-case'
+import BancoMongoDB from './infra/banco/banco-mongodb'
 //Tenho que ter uma rota post para cadastrar um filme
 
 //Salvar em algum lugar o filme que foi cadastrado.
@@ -23,8 +25,11 @@ app.post('/filmes',(req,res)=>{
     filmesCadastros.push(filme)
     res.status(201).send(filme)
 })
-app.get('/filmes',(req,res)=>{
-    res.send("Filmes Listados com sucesso")
+app.get('/filmes', async (req,res)=>{
+    const bancoMongoDB = new BancoMongoDB()
+    const listaFilme = new ListaFilme(bancoMongoDB)
+    const filmes = await listaFilme.execute()   
+    res.send(filmes)
 })
 
 app.get('/filmes/:id',(req,res)=>{
